@@ -35,7 +35,7 @@ class OrderAdmin(admin.ModelAdmin):
         "updated_at",
         "total_price",
     )
-    inlines = [OrderItemInLine]
+    inlines = [OrderItemInline]
 
 
 @admin.register(OrderItem)
