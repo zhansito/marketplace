@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My cart</title>
+</head>
+<body>
+  <h1>My cart</h1>
+
+  {% if messages %}
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+
+  {% if items %}
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Store</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+          <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.store.name }}</td>
+            <td>{{ item.product.price }} ₸</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.total_price }} ₸</td>
+            <td>
+                <form method="post"
+                      action="{% url 'cart:update_cart_item' item.id %}">
+                    {% csrf_token %}
+                    <label for="quantity-{{ item.id }}">Quantity:</label>
+                    <input
+                      type="number"
+                      id="quantity-{{ item.id }}"
+                      name="quantity"
+                      value="{{ item.quantity }}"
+                      min="1"
+                      max="{{ item.product.quantity }}"
+                      required
+                    >
+                    <button type="submit">Update</button>
+                </form>
+
+                <form method="post"
+                      action="{% url 'cart:remove_from_cart' item.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Remove</button>
+                </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Total: {{ total_price }} ₸</h2>
+  {% else %}
+    <p>Your cart is empty.</p>
+  {% endif %}
+
+  <p><a href="{% url 'catalog:product_list' %}">Continue shopping</a></p>
+</body>
+</html>
