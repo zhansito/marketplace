@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+</head>
+<body>
+    <h1>Checkout</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <h2>Order Summary</h2>
+
+    {% for item in items %}
+        <div>
+            <h3>{{ item.product.name }}</h3>
+            <p>Store: {{ item.product.store.name }}</p>
+            <p>Price: {{ item.product.price }}</p>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Subtotal: {{ item.total_price }}</p>
+        </div>
+        <hr>
+    {% endfor %}
+
+    <h3>Total: {{ total_price }}</h3>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div>
+            <label for="shipping_address">Shipping Address</label>
+            <textarea
+                id="shipping_address"
+                name="shipping_address"
+                rows="3"
+                required
+            ></textarea>
+        </div>
+
+        <div>
+            <label for="customer_note">Customer Note (optional)</label>
+            <textarea
+                id="customer_note"
+                name="customer_note"
+                rows="3"
+            ></textarea>
+        </div>
+
+        <button type="submit">Place Order</button>
+    </form>
+
+    <p>
+        <a href="{% url 'cart:cart_detail' %}">Back to Cart</a>
+    </p>
+</body>
+</html>

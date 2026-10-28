@@ -12,6 +12,10 @@ class Order(models.Model):
         DELIVERED = "delivered", "Доставлен"
         CANCELLED = "cancelled", "Отменен"
 
+    class PaymentStatus(models.TextChoices):
+        PENDING = "pending", "Pending"
+        PAID = "paid", "Paid (Demo)"
+
     order_number = models.UUIDField(
         default=uuid.uuid4,
         unique=True,
@@ -26,6 +30,11 @@ class Order(models.Model):
         max_length=20,
         choices=Status.choices,
         default=Status.PENDING,
+    )
+    payment_status = models.CharField(
+        max_length=20,
+        choices=PaymentStatus.choices,
+        default=PaymentStatus.PENDING,
     )
     shipping_address = models.TextField()
     customer_note = models.TextField(

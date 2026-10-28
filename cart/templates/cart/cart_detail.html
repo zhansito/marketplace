@@ -63,10 +63,17 @@
     </table>
 
     <h2>Total: {{ total_price }} ₸</h2>
+
+    <p>
+        <a href="{% url 'orders:checkout' %}">Proceed to Checkout</a>
+    </p>
+
   {% else %}
     <p>Your cart is empty.</p>
   {% endif %}
 
-  <p><a href="{% url 'catalog:product_list' %}">Continue shopping</a></p>
+  <p>
+      <a href="{% url 'catalog:product_list' %}">Continue shopping</a>
+  </p>
 </body>
 </html>
