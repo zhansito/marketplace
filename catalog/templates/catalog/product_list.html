@@ -1,36 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalog of products</title>
-</head>
-<body>
-    <h1>Catalog of products</h1>
 
-    {% for product in products %}
-        <div>
-            <h2>{{product.name }}</h2>
+{% extends "base.html" %}
 
-            <p>Store: {{ product.store.name }}</p>
-            <p>Category: {{ product.category.name }}</p>
-            <p>Price: {{ product.price }} ₸</p>
-            <p>Quantity: {{ product.quantity }} </p>
+{% block title %}Product Catalog | Marketplace{% endblock %}
 
-            {% if product.quantity > 0 %}
-                <form method="post" action="{% url 'cart:add_to_cart' product.id %}">
-                    {% csrf_token %}
-                    <button type="submit">Add to cart</button>
-                </form>
-            {% else %}
-                <p>Out of stock</p>
-            {% endif %}
-        </div>
-        <hr>
-    {% empty %}
-        <p>Temporarily out of stock</p>
-    {% endfor %}
+{% block content %}
+    <section class="catalog-heading">
+        <h1>Product Catalog</h1>
+        <p>Browse products from our marketplace sellers.</p>
+    </section>
 
-    <p><a href="{% url 'cart:cart_detail' %}">Go to cart</a> </p>
-</body>
-</html>
+    <div class="product-grid">
+        {% for product in products %}
+            <article class="product-card">
+                <div class="product-info">
+                    <h2>{{ product.name }}</h2>
+
+                    <p>
+                        <strong>Store:</strong>
+                        {{ product.store.name }}
+                    </p>
+
+                    <p>
+                        <strong>Category:</strong>
+                        {{ product.category.name }}
+                    </p>
+
+                    <p class="product-price">
+                        {{ product.price }} ₸
+                    </p>
+
+                    {% if product.quantity > 0 %}
+                        <p class="stock-available">In stock</p>
+
+                        <form method="post"
+                              action="{% url 'cart:add_to_cart' product.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Add to Cart</button>
+                        </form>
+                    {% else %}
+                        <p class="stock-unavailable">Out of stock</p>
+                        <button type="button" disabled>Unavailable</button>
+                    {% endif %}
+                </div>
+            </article>
+        {% empty %}
+            <section class="empty-state">
+                <h2>No Products Available</h2>
+                <p>There are currently no products to display.</p>
+            </section>
+        {% endfor %}
+    </div>
+
+    <p class="catalog-cart-link">
+        <a class="button" href="{% url 'cart:cart_detail' %}">
+            Go to Cart
+        </a>
+    </p>
+{% endblock %}

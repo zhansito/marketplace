@@ -1,60 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Checkout</title>
-</head>
-<body>
+
+{% extends "base.html" %}
+
+{% block title %}Checkout | Marketplace{% endblock %}
+
+{% block content %}
     <h1>Checkout</h1>
 
-    {% if messages %}
-        {% for message in messages %}
-            <p>{{ message }}</p>
+    <section class="checkout-summary">
+        <h2>Order Summary</h2>
+
+        {% for item in items %}
+            <div class="checkout-item">
+                <h3>{{ item.product.name }}</h3>
+                <p>Store: {{ item.product.store.name }}</p>
+                <p>Price: {{ item.product.price }} ₸</p>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p>Subtotal: {{ item.total_price }} ₸</p>
+            </div>
         {% endfor %}
-    {% endif %}
 
-    <h2>Order Summary</h2>
+        <h2>Total: {{ total_price }} ₸</h2>
+    </section>
 
-    {% for item in items %}
-        <div>
-            <h3>{{ item.product.name }}</h3>
-            <p>Store: {{ item.product.store.name }}</p>
-            <p>Price: {{ item.product.price }}</p>
-            <p>Quantity: {{ item.quantity }}</p>
-            <p>Subtotal: {{ item.total_price }}</p>
-        </div>
-        <hr>
-    {% endfor %}
+    <section class="form-card">
+        <h2>Shipping Information</h2>
 
-    <h3>Total: {{ total_price }}</h3>
+        <form method="post">
+            {% csrf_token %}
 
-    <form method="post">
-        {% csrf_token %}
+            <div class="form-group">
+                <label for="shipping_address">Shipping Address</label>
+                <textarea
+                    id="shipping_address"
+                    name="shipping_address"
+                    rows="3"
+                    required
+                ></textarea>
+            </div>
 
-        <div>
-            <label for="shipping_address">Shipping Address</label>
-            <textarea
-                id="shipping_address"
-                name="shipping_address"
-                rows="3"
-                required
-            ></textarea>
-        </div>
+            <div class="form-group">
+                <label for="customer_note">Customer Note (optional)</label>
+                <textarea
+                    id="customer_note"
+                    name="customer_note"
+                    rows="3"
+                ></textarea>
+            </div>
 
-        <div>
-            <label for="customer_note">Customer Note (optional)</label>
-            <textarea
-                id="customer_note"
-                name="customer_note"
-                rows="3"
-            ></textarea>
-        </div>
-
-        <button type="submit">Place Order</button>
-    </form>
+            <button type="submit">Place Order</button>
+        </form>
+    </section>
 
     <p>
         <a href="{% url 'cart:cart_detail' %}">Back to Cart</a>
     </p>
-</body>
-</html>
+{% endblock %}

@@ -1,53 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Details</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Order Details | Marketplace{% endblock %}
+
+{% block content %}
     <h1>Order Details</h1>
 
-    {% if messages %}
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
+    <section class="order-card">
+        <p><strong>Order number:</strong> {{ order.order_number }}</p>
+        <p><strong>Status:</strong> {{ order.status }}</p>
+        <p><strong>Payment status:</strong> {{ order.payment_status }}</p>
 
-    <p><strong>Order number:</strong> {{ order.order_number }}</p>
-    <p><strong>Status:</strong> {{ order.status }}</p>
-    <p><strong>Payment status:</strong> {{ order.payment_status }}</p>
+        {% if order.payment_status == "pending" %}
+            <form method="post" action="{% url 'orders:simulate_payment' order.id %}">
+                {% csrf_token %}
+                <button type="submit">Pay Now (Demo)</button>
+            </form>
+        {% else %}
+            <p class="success-message">
+                Payment completed (Demo).
+            </p>
+        {% endif %}
 
-    {% if order.payment_status == "pending" %}
-        <form method="post" action="{% url 'orders:simulate_payment' order.id %}">
-            {% csrf_token %}
-            <button type="submit">Pay Now (demo)</button>
-        </form>
-    {% else %}
-        <p>Payment completed (demo).</p>
-    {% endif %}
+        <p><strong>Shipping address:</strong> {{ order.shipping_address }}</p>
 
-    <p><strong>Shipping address:</strong> {{ order.shipping_address }}</p>
-
-    {% if order.customer_note %}
-        <p><strong>Customer note:</strong> {{ order.customer_note }}</p>
-    {% endif %}
+        {% if order.customer_note %}
+            <p><strong>Customer note:</strong> {{ order.customer_note }}</p>
+        {% endif %}
+    </section>
 
     <h2>Items</h2>
 
     {% for item in order.items.all %}
-        <div>
+        <section class="product-card">
             <h3>{{ item.product_name }}</h3>
             <p>Store: {{ item.store_name }}</p>
-            <p>Price: {{ item.price }}</p>
+            <p>Price: {{ item.price }} ₸</p>
             <p>Quantity: {{ item.quantity }}</p>
-            <p>Subtotal: {{ item.total_price }}</p>
-        </div>
-        <hr>
+            <p>Subtotal: {{ item.total_price }} ₸</p>
+        </section>
     {% endfor %}
 
-    <h2>Total: {{ order.total_price }}</h2>
+    <h2>Total: {{ order.total_price }} ₸</h2>
 
-    <p><a href="{% url 'catalog:product_list' %}">Continue Shopping</a></p>
-</body>
-</html>
+    <p>
+        <a class="button" href="{% url 'catalog:product_list' %}">
+            Continue Shopping
+        </a>
+    </p>
+{% endblock %}
