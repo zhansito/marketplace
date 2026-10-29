@@ -281,3 +281,195 @@ button:disabled {
     color: #64748b;
     font-size: 13px;
 }
+
+
+/* Bootstrap integration */
+
+header.bg-dark {
+    padding: 0;
+    display: block;
+}
+
+header .navbar {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+header .navbar a {
+    margin-right: 0;
+}
+
+header .navbar-brand {
+    font-size: 26px;
+}
+
+header .navbar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 8px 12px;
+}
+
+header .navbar .nav-link:hover {
+    color: white;
+}
+
+header .navbar .btn {
+    width: auto;
+}
+
+main.container {
+    width: 100%;
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+footer.bg-dark {
+    background-color: #212529 !important;
+    color: white;
+}
+
+footer.bg-dark p {
+    margin: 0;
+}
+
+.btn {
+    width: auto;
+    text-decoration: none;
+}
+
+.navbar-toggler {
+    width: auto;
+}
+
+
+/* Bootstrap product cards */
+
+.card {
+    border-radius: 14px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.09) !important;
+}
+
+.card .card-body {
+    padding: 24px;
+}
+
+.card .card-title {
+    font-size: 21px;
+    margin-bottom: 18px;
+}
+
+.card .badge {
+    font-size: 12px;
+    padding: 8px 12px;
+}
+
+.card .btn {
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+
+/* Product images */
+
+.product-image {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background-color: #ffffff;
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.product-image-placeholder {
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e9eef5;
+    color: #64748b;
+    font-size: 15px;
+    border-radius: 14px 14px 0 0;
+}
+
+
+/* Final catalog improvements */
+
+.card .product-image {
+    height: 150px;
+    width: 100%;
+    object-fit: contain;
+    padding: 10px;
+    background: #ffffff;
+}
+
+.card .product-image-placeholder {
+    height: 150px;
+}
+
+.card .card-body {
+    padding: 20px;
+}
+
+.card .card-title {
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+
+
+/* Cart Bootstrap improvements */
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 16px;
+    vertical-align: middle;
+}
+
+.table th {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.table td {
+    font-size: 14px;
+}
+
+.table .form-control {
+    width: 75px;
+    min-width: 75px;
+    margin: 0;
+}
+
+.table .btn {
+    white-space: nowrap;
+}
+
+.card .btn-lg {
+    padding: 12px 24px;
+}
+
+/* Cart action buttons */
+
+.table td:last-child {
+    min-width: 255px;
+}
+
+.table td:last-child form {
+    margin: 0 !important;
+}
+
+.table td:last-child .btn {
+    white-space: nowrap;
+}

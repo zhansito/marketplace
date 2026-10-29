@@ -4,56 +4,101 @@
 {% block title %}Product Catalog | Marketplace{% endblock %}
 
 {% block content %}
-    <section class="catalog-heading">
-        <h1>Product Catalog</h1>
-        <p>Browse products from our marketplace sellers.</p>
+
+    <section class="mb-4">
+        <h1 class="fw-bold">Product Catalog</h1>
+        <p class="text-muted">
+            Discover products from our marketplace sellers.
+        </p>
     </section>
 
-    <div class="product-grid">
+    <div class="row g-4">
         {% for product in products %}
-            <article class="product-card">
-                <div class="product-info">
-                    <h2>{{ product.name }}</h2>
 
-                    <p>
-                        <strong>Store:</strong>
-                        {{ product.store.name }}
-                    </p>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0">
 
-                    <p>
-                        <strong>Category:</strong>
-                        {{ product.category.name }}
-                    </p>
+                    {% with product_image=product.images.first %}
+                        {% if product_image %}
+                            <img
+                                src="{{ product_image.image.url }}"
+                                class="card-img-top product-image"
+                                alt="{{ product_image.alt_text|default:product.name }}"
+                                style="height: 130px !important; width: 100%; object-fit: contain;"
+                            >
+                        {% else %}
+                            <div class="product-image-placeholder">
+                                <span>No Image Available</span>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
 
-                    <p class="product-price">
-                        {{ product.price }} ₸
-                    </p>
+                    <div class="card-body d-flex flex-column">
 
-                    {% if product.quantity > 0 %}
-                        <p class="stock-available">In stock</p>
+                        <h5 class="card-title fw-bold">
+                            {{ product.name }}
+                        </h5>
 
-                        <form method="post"
-                              action="{% url 'cart:add_to_cart' product.id %}">
-                            {% csrf_token %}
-                            <button type="submit">Add to Cart</button>
-                        </form>
-                    {% else %}
-                        <p class="stock-unavailable">Out of stock</p>
-                        <button type="button" disabled>Unavailable</button>
-                    {% endif %}
+                        <p class="text-muted mb-1">
+                            <strong>Store:</strong>
+                            {{ product.store.name }}
+                        </p>
+
+                        <p class="text-muted mb-3">
+                            <strong>Category:</strong>
+                            {{ product.category.name }}
+                        </p>
+
+                        <h4 class="text-primary fw-bold mt-auto">
+                            {{ product.price }} ₸
+                        </h4>
+
+                        {% if product.quantity > 0 %}
+                            <p>
+                                <span class="badge bg-success">
+                                    In Stock
+                                </span>
+                            </p>
+
+                            <form method="post"
+                                  action="{% url 'cart:add_to_cart' product.id %}">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="btn btn-primary w-100">
+                                    Add to Cart
+                                </button>
+                            </form>
+                        {% else %}
+                            <p>
+                                <span class="badge bg-danger">
+                                    Out of Stock
+                                </span>
+                            </p>
+
+                            <button class="btn btn-secondary w-100"
+                                    disabled>
+                                Unavailable
+                            </button>
+                        {% endif %}
+
+                    </div>
                 </div>
-            </article>
+            </div>
+
         {% empty %}
-            <section class="empty-state">
-                <h2>No Products Available</h2>
-                <p>There are currently no products to display.</p>
-            </section>
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No products are currently available.
+                </div>
+            </div>
         {% endfor %}
     </div>
 
-    <p class="catalog-cart-link">
-        <a class="button" href="{% url 'cart:cart_detail' %}">
-            Go to Cart
+    <div class="mt-4">
+        <a href="{% url 'cart:cart_detail' %}"
+           class="btn btn-outline-primary">
+            View Cart
         </a>
-    </p>
+    </div>
+
 {% endblock %}
