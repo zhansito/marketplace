@@ -13,6 +13,20 @@
 
         <nav>
             <a href="{% url 'catalog:product_list' %}">Catalog</a>
+
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'users:become_seller' %}">Become a Seller</a>
+
+                <form method="post" action="{% url 'users:logout' %}" class="nav-form">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'users:login' %}">Login</a>
+                <a href="{% url 'users:register' %}">Register</a>
+            {% endif %}
+
         </nav>
     </header>
 

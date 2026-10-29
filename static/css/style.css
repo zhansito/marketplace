@@ -257,3 +257,27 @@ button:disabled {
 .catalog-cart-link {
     margin-top: 28px;
 }
+
+
+.nav-form {
+    display: inline-block;
+    margin: 0;
+}
+
+.nav-form button {
+    padding: 7px 12px;
+}
+
+.form-card form p {
+    margin-bottom: 16px;
+}
+
+.form-card ul.errorlist {
+    color: #dc2626;
+}
+
+.form-card .helptext {
+    display: block;
+    color: #64748b;
+    font-size: 13px;
+}

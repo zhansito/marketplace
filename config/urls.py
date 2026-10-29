@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import RedirectView
+
 
 urlpatterns = [
+    path("", RedirectView.as_view(url="/catalog/", permanent=False)),
     path("admin/", admin.site.urls),
     path("cart/", include("cart.urls")),
     path("catalog/", include("catalog.urls")),
     path("orders/", include("orders.urls")),
+    path("accounts/", include("users.urls")),
 ]
