@@ -1,0 +1,150 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} | Marketplace{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'catalog:product_list' %}"
+   class="btn btn-outline-secondary mb-4">
+    Back to Catalog
+</a>
+
+<div class="row g-4 mb-5">
+
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm p-4">
+            {% with product_image=product.images.first %}
+                {% if product_image %}
+                    <img src="{{ product_image.image.url }}"
+                         alt="{{ product_image.alt_text|default:product.name }}"
+                         class="img-fluid"
+                         style="height: 280px; width: 100%; object-fit: contain;">
+                {% else %}
+                    <div class="product-image-placeholder">
+                        No Image Available
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <h1 class="fw-bold">{{ product.name }}</h1>
+
+        <p class="text-muted">
+            Store: {{ product.store.name }}
+        </p>
+
+        <p>
+            Category: {{ product.category.name }}
+        </p>
+
+        <div class="mb-3">
+            <span class="text-warning fs-4">★</span>
+
+            {% if average_rating %}
+                <strong>{{ average_rating|floatformat:1 }}/5</strong>
+                <span class="text-muted">
+                    ({{ review_count }} reviews)
+                </span>
+            {% else %}
+                <span class="text-muted">No ratings yet</span>
+            {% endif %}
+        </div>
+
+        <h3 class="text-primary fw-bold">
+            {{ product.price }} ₸
+        </h3>
+
+        <p>{{ product.description }}</p>
+
+        {% if product.quantity > 0 %}
+            <form method="post"
+                  action="{% url 'cart:add_to_cart' product.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">
+                    Add to Cart
+                </button>
+            </form>
+        {% else %}
+            <span class="badge bg-danger">Out of Stock</span>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+
+        <h3 class="fw-bold mb-3">
+            Customer Reviews
+        </h3>
+
+        {% for review in reviews %}
+            <div class="border-bottom py-3">
+                <div class="d-flex justify-content-between">
+                    <strong>{{ review.user.username }}</strong>
+                    <span class="text-warning">
+                        ★ {{ review.rating }}/5
+                    </span>
+                </div>
+
+                <p class="mb-1">{{ review.comment }}</p>
+
+                <small class="text-muted">
+                    {{ review.created_at|date:"d M Y" }}
+                </small>
+            </div>
+        {% empty %}
+            <p class="text-muted">
+                No reviews yet. Be the first to review this product!
+            </p>
+        {% endfor %}
+
+        <hr>
+
+        <h4 class="fw-bold">
+            {% if user_review %}
+                Edit Your Review
+            {% else %}
+                Write a Review
+            {% endif %}
+        </h4>
+
+        {% if user.is_authenticated %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">Your Rating</label>
+                    {{ review_form.rating }}
+                    {{ review_form.rating.errors }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Your Comment</label>
+                    {{ review_form.comment }}
+                    {{ review_form.comment.errors }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    {% if user_review %}
+                        Update Review
+                    {% else %}
+                        Submit Review
+                    {% endif %}
+                </button>
+            </form>
+
+        {% else %}
+            <p>
+                <a href="{% url 'users:login' %}">Login</a>
+                to write a review.
+            </p>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
